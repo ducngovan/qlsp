@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>DEMO</title>
+</head>
+<body>
+<div class="content">
+   <div id="add">
+       <div><h1>ADD EMPLOYEES</h1></div>
+       <div>
+           ID: <input type="text" id="id"  style="width: 30px" class="data-input"/>
+           Name: <input type="text" id="name" class="data-input"/>
+           Age: <input type="text" id="age" style="width: 40px" class="data-input"/>
+           Salary: <input type="text" id="salary" placeholder="VND" class="data-input"/>
+           <button type="button" onclick="setData()">ADD</button>
+       </div>
+   </div>
+        <h1>list nhan vien</h1>
+        <div id="list_nv"></div>
+    <div>
+        <h1>sua thong tin nv</h1>
+        <div id="form_update"></div>
+    </div>
+
+<script>
+    var datas = [];
+    function setData() {
+        let dataInput = document.getElementsByClassName('data-input');
+        store(dataInput);
+        // console.log(datas);
+        index();
+    }
+
+    function store(data) {
+        let dataStores = [];
+        for (var i=0; i<data.length; i++){
+            dataStores.push(data[i].value);
+        }
+        datas.push(dataStores);
+    }
+
+    // <table>
+    //      <thead>...</thead>
+    //      <body>....</body>
+    // </table>
+    function index() {
+        let html = '<table border="1">';
+        html += '<thead><tr><th>ID</th><th>Name</th><th>Age</th><th>Salary</th><th>Function</th></tr></thead>';
+        html += '<tbody>';
+        datas.forEach(function (val, key) {
+            html += '<tr>';
+            val.forEach(function (value) {
+                html += '<td>'+value+'</td>';
+            });
+            html += '<td><button onclick="update('+key+')">Edit</button><button  onclick="destroy('+key+')">Delete</button></td></tr>';
+        });
+        html += '</tbody></table>';
+        document.getElementById('list_nv').innerHTML = html;
+    }
+    function destroy(key) {
+        datas.splice(key, 1);
+        index();
+    }
+
+    function update(key) {
+        let dataUpdate, htmlUpdate = '';
+        dataUpdate = datas[key];
+        dataUpdate.forEach(function (valueUpdate, keyUpdate) {
+            htmlUpdate += '<span>'+keyUpdate+': <input value="'+valueUpdate+'" class="input-update">';
+        });
+        htmlUpdate += '<button onclick="actionUpdate('+key+')">Save</button>';
+        document.getElementById('form_update').innerHTML = htmlUpdate;
+    }
+
+    function actionUpdate(key) {
+        let inputUpdate = document.getElementsByClassName('input-update');
+        let dataUpdate = [];
+        for (var i=0; i<inputUpdate.length; i++){
+            dataUpdate.push(inputUpdate[i].value);
+        }
+        datas[key] = dataUpdate;
+        index();
+    }
+    // function employees(id,name,age,salary) {
+    //     this.id = id;
+    //     this.name = name;
+    //     this.age = age;
+    //     this.salary = salary;
+    //     this.getSalary = function () {
+    //         return this.salary;
+    //     };
+    //     this.setSalary = function (salary) {
+    //         this.salary = salary;
+    //         return this.salary;
+    //     };
+    //     this.getTax = function () {
+    //        if(this.salary > 10000000){
+    //            let tax = this.salary *0.1;
+    //            return tax;
+    //        }else{
+    //            return 0;
+    //        }
+    //     };
+    // }
+
+</script>
+</body>
+</html>
